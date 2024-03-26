@@ -1,4 +1,5 @@
 using Application;
+using Persistence;
 
 namespace WebApi;
 
@@ -13,6 +14,7 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddApplicationServices();
+        builder.Services.AddPersistenceServices(builder.Configuration);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
