@@ -1,4 +1,5 @@
 using Application;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Persistence;
 
 namespace WebApi;
@@ -15,6 +16,11 @@ public class Program
 
         builder.Services.AddApplicationServices();
         builder.Services.AddPersistenceServices(builder.Configuration);
+        builder.Services.AddHttpContextAccessor();
+
+        //builder.Services.AddDistributedMemoryCache(); //In memory cache
+        builder.Services.AddStackExchangeRedisCache(opt => 
+            opt.Configuration = "localhost:6379");
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +34,9 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        //if (app.Environment.IsProduction())
+            app.ConfigureCustomExceptionMiddleware();
 
         app.UseHttpsRedirection();
 
